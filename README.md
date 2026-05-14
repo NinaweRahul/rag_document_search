@@ -26,4 +26,4 @@ about it in natural language, with full conversation memory for follow-up questi
 
 # RAG Document Search with Gemini + ChromaDB
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/NinaweRahul/rag-document-search/blob/main/rag_document_search_gemini.ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/NinaweRahul/rag_document_search/blob/main/rag_document_search_gemini.ipynb)
