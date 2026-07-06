@@ -1,25 +1,34 @@
 import os
 from dotenv import load_dotenv
+import logging
 
 load_dotenv()
 
 # ── 1. Load Document ──────────────────────────────────────
 def load_document(file):
     name, extension = os.path.splitext(file)
-    if extension == '.pdf':
-        from langchain_community.document_loaders import PyPDFLoader
-        loader = PyPDFLoader(file)
-    elif extension == '.docx':
-        from langchain_community.document_loaders import Docx2txtLoader
-        loader = Docx2txtLoader(file)
-    elif extension == '.txt':
-        from langchain_community.document_loaders import TextLoader
-        loader = TextLoader(file)
-    else:
-        print('Unsupported format.')
-        return None
-    return loader.load()
+    extension = extension.lower()
 
+    try:
+        if extension == '.pdf':
+            from langchain_community.document_loaders import PyPDFLoader
+            loader = PyPDFLoader(file)
+        elif extension == '.docx':
+            from langchain_community.document_loaders import Docx2txtLoader
+            loader = Docx2txtLoader(file)
+        elif extension == '.txt':
+            from langchain_community.document_loaders import TextLoader
+            loader = TextLoader(file)
+        else:
+            print(f"Unsupported format: {extension}")
+            return None
+
+        return loader.load()
+
+    except Exception as e:
+        print(f"Error: could not parse '{file}'. It may be corrupted or malformed. ({e})")
+        return None
+        
 # ── 2. Chunk ──────────────────────────────────────────────
 def chunk_data(data, chunk_size=256):
     from langchain_text_splitters import RecursiveCharacterTextSplitter
@@ -117,6 +126,9 @@ if __name__ == "__main__":
 
     print("Loading document...")
     data = load_document(pdf_path)
+    if data is None:
+        print("Could not load document. Exiting.")
+        raise SystemExit(1)
     print(f"Pages loaded: {len(data)}")
 
     print("Chunking...")
